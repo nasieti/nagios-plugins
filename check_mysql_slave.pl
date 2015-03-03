@@ -149,6 +149,9 @@ sub compare_replication_status {
 		$master->{'File_No'}, $master->{'Position'}, 
 		$slave->{'File_No'}, $slave->{'Exec_Master_Log_Pos'}, 
 		($diff/$max_binlog), ($diff % $max_binlog);
+
+	$diff = abs $diff;
+
 	$status .= "$state  ";
 	if ($diff >= $options->{'crit'}) {
 		return 2; # CRITICAL
