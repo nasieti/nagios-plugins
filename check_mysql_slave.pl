@@ -13,7 +13,8 @@ my $options = {
 	'debug' => 0
 };
 GetOptions($options, "master=s", "slave=s", "port=i", "dbuser=s", "dbpass=s",
-	"crit=i", "warn=i", "debug=i", "help");
+	"crit=i", "warn=i", "debug=i", "help", "slaveport=i");
+	$options->{'slaveport'}=$options->{'port'} unless exists $options->{'slaveport'};
 my $max_binlog;
 
 if (defined $options->{'help'}) {
@@ -93,7 +94,8 @@ sub get_replication_status {
 	Carp::cluck "port" if !defined $options->{'port'};
 	Carp::cluck "dbuser" if !defined $options->{'dbuser'};
 	Carp::cluck "dbpass" if !defined $options->{'dbpass'};
-	my $dbh = DBI->connect("DBI:mysql:host=$host;port=$options->{'port'}",
+	my $actualport = ($role eq 'slave') ? $options->{'slaveport'}:$options->{'port'};
+	my $dbh = DBI->connect("DBI:mysql:host=$host;port=$actualport",
 		$options->{'dbuser'}, $options->{'dbpass'});
 	if (not $dbh) {
 		print "UNKNOWN: cannot connect to $host";
