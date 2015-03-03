@@ -174,9 +174,9 @@ sub check_slave_status {
 	my $SQL_state = sprintf "%s\n", $slave->{'Slave_SQL_Running'};
 
 	$status .= "$state  ";
-	if ($IO_state eq 'Yes') {
+	if ($IO_state !~ m~Yes~) {
 		return 2; # CRITICAL
-	} elsif ($SQL_state eq 'Yes') {
+	} elsif ($SQL_state !~ m~Yes~) {
 		return 2; # CRITICAL
 	}
 	return 0; # OK
