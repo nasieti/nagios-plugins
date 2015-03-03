@@ -10,12 +10,12 @@ my $options = {
 	'master' => 'master.host', 'slave' => 'slave.host',
 	'dbuser' => 'username', 'dbpass' => 'password',
 	'port' => 3306, 'crit' => 100000, 'warn' => 10000,
-	'debug' => 0
+	'debug' => 0,
 };
 GetOptions($options, "master=s", "slave=s", "port=i", "dbuser=s", "dbpass=s",
 	"crit=i", "warn=i", "debug=i", "help", "slaveport=i");
 	$options->{'slaveport'}=$options->{'port'} unless exists $options->{'slaveport'};
-my $max_binlog;
+my $max_binlog=1073741824;
 
 if (defined $options->{'help'}) {
 	print <<HELP;
